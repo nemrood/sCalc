@@ -10,16 +10,19 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  php: 7.1
+  phpVersion: 7.2
   serviceConnectionToAzure: exit
   appName: harapp
 
 steps:
-- task: ArchiveFiles@1
+- task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(build.sourcesDirectory)'
     includeRootFolder: false
 - task: PublishBuildArtifacts@1
+  displayName: Publish Artifact
+  inputs:
+    PathtoPublish: $(build.artifactstagingdirectory)
 
 - task: AzureWebApp@1
   displayName: Azure Web App Deploy
