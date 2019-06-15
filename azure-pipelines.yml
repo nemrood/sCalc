@@ -9,9 +9,24 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  php: 7.1
+  serviceConnectionToAzure: exit
+  appName: harapp
+
 steps:
-- task: ArchiveFiles@2
+- task: ArchiveFiles@1
   inputs:
     rootFolderOrFile: '$(build.sourcesDirectory)'
     includeRootFolder: false
 - task: PublishBuildArtifacts@1
+
+- task: AzureWebApp@1
+  displayName: Azure Web App Deploy
+  inputs:
+    azureSubscription: $(serviceConnectionToAzure)
+    appType: webAppLinux
+    appName: $(appName)
+    package: $(build.artifactstagingdirectory)/**/*.zip
+
+
